@@ -19,3 +19,11 @@ resource "azurerm_resource_group" "name" {
   name = var.resource_group_name
   location = var.location
 }
+
+resource "azurerm_storage_account" "name" {
+    name = var.resource_group_name
+    location = var.location
+    access_tier = "Standard"
+    account_replication_type = "LRS"
+  
+}
