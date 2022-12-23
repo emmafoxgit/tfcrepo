@@ -27,3 +27,13 @@ resource "azurerm_storage_account" "name" {
     account_replication_type = "LRS"
   
 }
+
+resource "azurerm_cosmosdb_account" "name" {
+    name=var.cosmos_db_account
+    location = var.location
+    resource_group_name = var.resource_group_name
+    offer_type = "Standard"
+    kind = "MongoDB"
+    enable_automatic_failover = true
+  
+}

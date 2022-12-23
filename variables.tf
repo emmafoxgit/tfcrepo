@@ -12,3 +12,8 @@ variable "storage_account" {
     type = string
   
 }
+
+variable "cosmos_db_account" {
+    type = string
+  
+}
