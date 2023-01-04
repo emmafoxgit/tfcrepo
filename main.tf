@@ -12,22 +12,36 @@ provider "azurerm" {
   features {}
 }
 
-   
 resource "azurerm_resource_group" "example" {
-  name     = "tfow-rg-today"
+  name     = "tony-today-rg"
   location = "West Europe"
 }
 
-resource "azurerm_key_vault" "example" {
-  name                        = "examplekeyvault"
-  location                    = azurerm_resource_group.example.location
-  resource_group_name         = azurerm_resource_group.example.name
-  enabled_for_disk_encryption = true
-  tenant_id                   = data.azurerm_client_config.current.tenant_id
-  soft_delete_retention_days  = 7
-  purge_protection_enabled    = false
+resource "azurerm_network_security_group" "example" {
+  name                = "example-security-group"
+  location            = azurerm_resource_group.example.location
+  resource_group_name = azurerm_resource_group.example.name
+}
 
-  sku_name = "standard"
+resource "azurerm_virtual_network" "example" {
+  name                = "example-network"
+  location            = azurerm_resource_group.example.location
+  resource_group_name = azurerm_resource_group.example.name
+  address_space       = ["10.0.0.0/16"]
+  dns_servers         = ["10.0.0.4", "10.0.0.5"]
 
-  
+  subnet {
+    name           = "subnet1"
+    address_prefix = "10.0.1.0/24"
+  }
+
+  subnet {
+    name           = "subnet2"
+    address_prefix = "10.0.2.0/24"
+    security_group = azurerm_network_security_group.example.id
+  }
+
+  tags = {
+    environment = "Production"
+  }
 }
